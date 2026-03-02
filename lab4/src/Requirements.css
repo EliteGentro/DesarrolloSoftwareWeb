@@ -1,0 +1,13 @@
+/* Custom styles for requirements component */
+.requirements-header {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.requirements-table {
+  margin-top: 1rem;
+}
+
+.requirements-footer {
+  margin-top: 2rem;
+}
