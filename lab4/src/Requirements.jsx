@@ -1,14 +1,19 @@
 import React, { useState } from "react";
-import "./Requirements.css";
+import "./App.css";
 import {
   Table,
   Button,
   Container,
   FormGroup,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Card,
+  CardHeader,
+  CardBody,
 } from "reactstrap";
-import RequirementModal from "./RequirementModal";
 
-// initial list of requirements (could later come from an API)
 const initialData = [
   {
     id: 1,
@@ -41,23 +46,51 @@ const initialData = [
   },
 ];
 
-function Requirements() {
-  const [items, setItems] = useState(initialData);
-  const [modalType, setModalType] = useState(null); // 'insert' | 'edit' | null
+export default function Requirements() {
+  const [data, setData] = useState(initialData);
+  const [modalActualizar, setModalActualizar] = useState(false);
+  const [modalInsertar, setModalInsertar] = useState(false);
   const [form, setForm] = useState({ id: "", codigo: "", descripcion: "" });
 
-  const openInsert = () => {
-    setForm({ id: items.length + 1, codigo: "", descripcion: "" });
-    setModalType("insert");
+  const mostrarModalActualizar = (dato) => {
+    setForm(dato);
+    setModalActualizar(true);
+  };
+  const cerrarModalActualizar = () => {
+    setModalActualizar(false);
+  };
+  const mostrarModalInsertar = () => {
+    setForm({ id: "", codigo: "", descripcion: "" });
+    setModalInsertar(true);
+  };
+  const cerrarModalInsertar = () => {
+    setModalInsertar(false);
   };
 
-  const openEdit = (item) => {
-    setForm(item);
-    setModalType("edit");
+  const editar = (dato) => {
+    setData((prev) =>
+      prev.map((registro) =>
+        registro.id === dato.id ? { ...registro, ...dato } : registro,
+      ),
+    );
+    setModalActualizar(false);
   };
 
-  const closeModal = () => {
-    setModalType(null);
+  const eliminar = (dato) => {
+    if (
+      window.confirm(
+        `¿Estás seguro que deseas eliminar el elemento ${dato.id}?`,
+      )
+    ) {
+      setData((prev) => prev.filter((registro) => registro.id !== dato.id));
+      setModalActualizar(false);
+    }
+  };
+
+  const insertar = () => {
+    const valorNuevo = { ...form, id: data.length + 1 };
+    setData((prev) => [...prev, valorNuevo]);
+    setModalInsertar(false);
   };
 
   const handleChange = (e) => {
@@ -65,81 +98,142 @@ function Requirements() {
     setForm((f) => ({ ...f, [name]: value }));
   };
 
-  const handleSave = () => {
-    if (modalType === "insert") {
-      setItems((prev) => [...prev, { ...form, id: prev.length + 1 }]);
-    } else if (modalType === "edit") {
-      setItems((prev) =>
-        prev.map((it) => (it.id === form.id ? { ...form } : it)),
-      );
-    }
-    closeModal();
-  };
-
-  const handleDelete = (item) => {
-    if (
-      window.confirm(`¿Estás seguro que deseas eliminar el elemento ${item.id}?`)
-    ) {
-      setItems((prev) => prev.filter((it) => it.id !== item.id));
-    }
-  };
-
   return (
-    <>
-      <Container>
-        <h2 className="requirements-header">Requisitos funcionales</h2>
-        <Button color="success" onClick={openInsert} className="mb-3">
-          + Crear requisito
-        </Button>
+    <Container className="mt-4 requirements-normal">
+      <Card>
+        <CardHeader className="bg-primary text-white">
+          <h3>Requisitos</h3>
+        </CardHeader>
+        <CardBody>
+          <Button color="success" onClick={mostrarModalInsertar}>
+            Crear nuevo requisito
+          </Button>
 
-        <Table striped hover responsive className="requirements-table">
-          <thead className="table-dark">
-            <tr>
-              <th>ID</th>
-              <th>Código</th>
-              <th>Descripción</th>
-              <th>Acción</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((item) => (
-              <tr key={item.id}>
-                <td>{item.id}</td>
-                <td>{item.codigo}</td>
-                <td>{item.descripcion}</td>
-                <td>
-                  <Button
-                    color="primary"
-                    size="sm"
-                    onClick={() => openEdit(item)}
-                    className="me-1"
-                  >
-                    Editar
-                  </Button>
-                  <Button
-                    color="danger"
-                    size="sm"
-                    onClick={() => handleDelete(item)}
-                  >
-                    Eliminar
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </Container>
+          <div className="table-responsive mt-3">
+            <Table striped hover bordered>
+              <thead className="table-dark">
+                <tr>
+                  <th>ID</th>
+                  <th>Código</th>
+                  <th>Descripción</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((dato) => (
+                  <tr key={dato.id}>
+                    <td>{dato.id}</td>
+                    <td>{dato.codigo}</td>
+                    <td>{dato.descripcion}</td>
+                    <td>
+                      <Button
+                        size="sm"
+                        color="primary"
+                        onClick={() => mostrarModalActualizar(dato)}
+                      >
+                        Editar
+                      </Button>{" "}
+                      <Button
+                        size="sm"
+                        color="danger"
+                        onClick={() => eliminar(dato)}
+                      >
+                        Eliminar
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
+        </CardBody>
+      </Card>
 
-      <RequirementModal
-        isOpen={modalType !== null}
-        toggle={closeModal}
-        title={modalType === "edit" ? "Editar" : "Insertar"}
-        form={form}
-        onChange={handleChange}
-        onSubmit={handleSave}
-      />
-    </>
+      <Modal isOpen={modalInsertar} toggle={cerrarModalInsertar}>
+        <ModalHeader toggle={cerrarModalInsertar}>Nuevo requisito</ModalHeader>
+        <ModalBody>
+          <FormGroup>
+            <label>ID</label>
+            <input
+              className="form-control"
+              readOnly
+              type="text"
+              value={data.length + 1}
+            />
+          </FormGroup>
+          <FormGroup>
+            <label>Código</label>
+            <input
+              className="form-control"
+              name="codigo"
+              type="text"
+              onChange={handleChange}
+            />
+          </FormGroup>
+          <FormGroup>
+            <label>Descripción</label>
+            <input
+              className="form-control"
+              name="descripcion"
+              type="text"
+              onChange={handleChange}
+            />
+          </FormGroup>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={insertar}>
+            Insertar
+          </Button>{" "}
+          <Button color="secondary" onClick={cerrarModalInsertar}>
+            Cancelar
+          </Button>
+        </ModalFooter>
+      </Modal>
+
+      <Modal isOpen={modalActualizar} toggle={cerrarModalActualizar}>
+        <ModalHeader toggle={cerrarModalActualizar}>
+          Editar requisito
+        </ModalHeader>
+        <ModalBody>
+          <FormGroup>
+            <label>ID</label>
+            <input
+              className="form-control"
+              readOnly
+              type="text"
+              value={form.id}
+            />
+          </FormGroup>
+          <FormGroup>
+            <label>Código</label>
+            <input
+              className="form-control"
+              name="codigo"
+              type="text"
+              value={form.codigo}
+              onChange={handleChange}
+            />
+          </FormGroup>
+          <FormGroup>
+            <label>Descripción</label>
+            <input
+              className="form-control"
+              name="descripcion"
+              type="text"
+              value={form.descripcion}
+              onChange={handleChange}
+            />
+          </FormGroup>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={() => editar(form)}>
+            Guardar
+          </Button>{" "}
+          <Button color="secondary" onClick={cerrarModalActualizar}>
+            Cancelar
+          </Button>
+        </ModalFooter>
+      </Modal>
+    </Container>
   );
 }
-
-export default Requirements;

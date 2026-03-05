@@ -37,6 +37,19 @@
   padding: 2em;
 }
 
+/* styles specific to the two requirement components */
+.requirements-ai .card {
+  border: 2px dashed #0dcaf0;
+}
+.requirements-ai .card-header {
+  background-color: #0dcaf0 !important;
+  color: #fff !important;
+}
+.requirements-normal .card-header {
+  background-color: #0d6efd !important;
+  color: #fff !important;
+}
+
 .read-the-docs {
   color: #888;
 }
