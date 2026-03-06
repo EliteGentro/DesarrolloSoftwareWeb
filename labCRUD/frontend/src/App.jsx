@@ -1,6 +1,6 @@
 import { useState } from "react";
-import WorkItemList from "./components/WorkItemList";
-import WorkItemListAI from "./components/WorkItemListAI";
+import CountryList from "./components/CountryList";
+import CountryListAI from "./components/CountryListAI";
 import "./App.css";
 
 function App() {
@@ -8,22 +8,20 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Administrador de Work Items</h1>
+        <h1>Administrador de Países</h1>
       </header>
       <main>
         <div className="dual-lists">
           <div className="original">
-            <h2>Original</h2>
-            <WorkItemList />
+            <CountryList />
           </div>
-          <div className="ai-version">
-            <h2>AI Enhanced</h2>
-            <WorkItemListAI />
+          <div className="ai">
+            <CountryListAI />
           </div>
         </div>
       </main>
       <footer>
-        <p>CRUD de Work Items © 2026</p>
+        <p>CRUD de Países © 2026</p>
       </footer>
     </div>
   );
