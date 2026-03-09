@@ -1,0 +1,156 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+/* country manager styles */
+.country-list {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: left;
+}
+.country-list h2 {
+  border-bottom: 2px solid #333;
+  padding-bottom: 0.5rem;
+}
+.country-item,
+.country-item-ai {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  margin: 0.5rem 0;
+  border-radius: 6px;
+  background: #f5f5f5;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.country-item-ai {
+  background: #e0f7fa;
+  border-left: 4px solid #00796b;
+}
+.country-actions button {
+  margin-left: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.country-actions .edit-btn {
+  background: #4caf50;
+  color: white;
+}
+.country-actions .delete-btn {
+  background: #f44336;
+  color: white;
+}
+.country-actions .edit-btn:hover,
+.country-actions .delete-btn:hover {
+  opacity: 0.85;
+}
+
+.country-form,
+.country-form-ai {
+  background: #fafafa;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+.country-form-ai {
+  background: #fff3e0;
+  border-color: #ffb74d;
+}
+.country-form .form-group,
+.country-form-ai .form-group {
+  margin-bottom: 0.75rem;
+}
+.country-form label,
+.country-form-ai label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+.country-form input,
+.country-form-ai input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.country-form-ai input {
+  border-color: #ffb74d;
+}
+.country-form .form-actions,
+.country-form-ai .form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+/* layout for showing both versions side by side */
+.dual-lists {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.dual-lists > div {
+  flex: 1 1 400px;
+}
+.dual-lists h2 {
+  margin-top: 0;
+}
+
+/* AI sidebar styling */
+.ai-sidebar {
+  margin-left: 1rem;
+  padding: 1rem;
+  background: #e3f2fd;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: #0d47a1;
+}
+.country-form-ai-with-sidebar {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
